@@ -8,7 +8,9 @@ const app = express()
 
 app.use(cors())
 
-app.use('/auth', verification, proxy(process.env.URL_AUTH))
+app.use('/auth', proxy(process.env.URL_AUTH))
+app.use('/post', verification, proxy(process.env.URL_POST))
+app.use('/comment', verification, proxy(process.env.URL_COMMENT))
 
 app.listen(7000, () => {
     console.log(`running at http://localhost:${7000}`)

@@ -4,10 +4,13 @@ const { signUpUser, getUsers, loginUser } = require('../controllers/userControll
 const router = express.Router()
 
 router
-    .post('/signup', signUpUser)
+    .get('/', getUsers)
 
 router
-    .get('/login', getUsers)
-    .post('/login',loginUser)
+    .post('/signup', signUpUser)
+
+
+router
+    .post('/login', loginUser)
 
 module.exports = router

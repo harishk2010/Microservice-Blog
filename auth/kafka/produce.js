@@ -20,4 +20,4 @@ async function produce(topic, value) {
     }
 
 }
-module.exports=produce
+module.exports = produce
