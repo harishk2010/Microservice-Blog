@@ -1,0 +1,124 @@
+version: '3.7'
+
+services:
+  # Blog Service
+  post-service:
+    build:
+      context: ./post
+    ports:
+      - "4002:4002"
+    depends_on:
+      - post-db
+      - kafka
+    environment:
+      - MONGO_URL=mongodb://post-db:27017/postDB  # Add Mongo URI for blog-db
+      - KAFKA=kafka:9092
+      # - GATEWAY_URL=http://gateway:4000 # Add Gateway URL
+    networks:
+      - blog-network
+
+  # Comment Service
+  comment-service:
+    build:
+      context: ./comment
+    ports:
+      - "4003:4003"
+    depends_on:
+      - comment-db
+      - kafka
+    environment:
+      - MONGO_URL=mongodb://comment-db:27017/commentdb  # Add Mongo URI for comment-db
+      - KAFKA=kafka:9092
+    networks:
+      - blog-network
+
+  # User Service
+  auth-service:
+    build:
+      context: ./auth
+    ports:
+      - "4001:4001"
+    depends_on:
+      - auth-db
+      - kafka
+    environment:
+      - JWT_TOKEN=mynameissecret
+      - MONGO_URL=mongodb://auth-db:27017/authdb  # Add Mongo URI for user-db
+      - KAFKA=kafka:9092
+    networks:
+      - blog-network
+
+  # API Gateway
+  gateway:
+    build:
+      context: ./gateway
+    ports:
+      - "7000:7000"
+    depends_on:
+      - post-service
+      - comment-service
+      - auth-service
+    environment:
+      - JWT_TOKEN=mynameissecret
+      - URL_AUTH=http://auth-service:4001
+      - URL_POST=http://post-service:4002
+      - URL_COMMENT=http://comment-service:4003
+    networks:
+      - blog-network
+
+  # MongoDB for Blog Service
+  post-db:
+    image: mongo:latest
+    container_name: post-db
+    volumes:
+      - post-db-data:/data/db
+    networks:
+      - blog-network
+
+  # MongoDB for Comment Service
+  comment-db:
+    image: mongo:latest
+    container_name: comment-db
+    volumes:
+      - comment-db-data:/data/db
+    networks:
+      - blog-network
+
+  # MongoDB for User Service
+  auth-db:
+    image: mongo:latest
+    container_name: auth-db
+    volumes:
+      - auth-db-data:/data/db
+    networks:
+      - blog-network
+  kafka:
+    image: confluentinc/cp-kafka:7.0.1
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    networks:
+      - blog-network
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - blog-network
+
+networks:
+  blog-network:
+    driver: bridge
+
+volumes:
+  post-db-data:
+  comment-db-data:
+  auth-db-data:

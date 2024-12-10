@@ -1,4 +1,4 @@
-let bcrypt = require('bcrypt')
+let bcrypt = require('bcryptjs')
 let jwt = require('jsonwebtoken')
 require('dotenv').config()
 let { User } = require('../models/userModel')

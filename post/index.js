@@ -1,5 +1,5 @@
 const express = require('express')
-const routes = require('../post/routes/routes')
+const routes = require("./routes/routes")
 const consume = require('./kafka/consume')
 const postDb = require('./config/dbConnect')
 

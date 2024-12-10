@@ -12,6 +12,6 @@ app.use('/auth', proxy(process.env.URL_AUTH))
 app.use('/post', verification, proxy(process.env.URL_POST))
 app.use('/comment', verification, proxy(process.env.URL_COMMENT))
 
-app.listen(7000, () => {
-    console.log(`running at http://localhost:${7000}`)
+app.listen(process.env.PORT, () => {
+    console.log(`running at http://localhost:${process.env.PORT}`)
 })
