@@ -1,7 +1,8 @@
 const kafka = require('./kafkaConfig')
 const { addUser, addPost, deletePost }=require('../controllers/commentController')
 
-async function consume(title, value) {
+async function consume() {
+    console.log("consume............")
     try {
         const consumer = kafka.consumer({ groupId: "comment-group" })
         await consumer.connect()
@@ -12,21 +13,22 @@ async function consume(title, value) {
         })
         await consumer.run({
             eachMessage: async ({ topic, message }) => {
-                const value = JSON.parse(message.value.toString())
-                if (topic == "add-user") {
-                    await addUser(value)
-
+                console.log(topic,"topic")
+                try {
+                    const value = JSON.parse(message.value.toString());
+                    if (topic === "add-user") {
+                        await addUser(value);
+                    } else if (topic === "add-post") {
+                        await addPost(value);
+                    } else if (topic === "delete-post") {
+                        await deletePost(value);
+                    }
+                } catch (error) {
+                    console.error(`Error processing message from topic ${topic}:`, error);
                 }
-                if (topic==="add-post") {
-                    await addPost(value)
-
-                }
-                if (topic==="delete-post") {
-                    await deletePost(value)
-
-                }
-            }
-        })
+            },
+        });
+        
 
 
     } catch (error) {

@@ -2,7 +2,9 @@ const { Kafka } = require('kafkajs')
 
 const kafka = new Kafka({
     clientId: 'post-app',
-    brokers: [process.env.KAFKA],
+    brokers: ["kafka:9092"],
+    // brokers: ["localhost:9092"],
+    
 
 })
 

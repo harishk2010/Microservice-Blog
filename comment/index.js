@@ -1,8 +1,8 @@
 const express = require('express')
 const commentDb = require('./config/dbConnect')
 const routes = require('./routes/routes')
-const consume = require('./kafka/consume')
 require('dotenv').config()
+const consume = require('./kafka/consume')
 
 const app = express()
 app.use(express.json())

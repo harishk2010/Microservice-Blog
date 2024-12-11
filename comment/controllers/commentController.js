@@ -48,6 +48,7 @@ const addUser = async (value) => {
 }
 const addPost = async (value) => {
     try {
+        console.log(value,"comment add post")
         const newPost = new Post(value)
         await newPost.save()
 

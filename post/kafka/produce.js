@@ -3,6 +3,7 @@ const { Partitioners } = require('kafkajs')
 
 async function produce(topic, value) {
     try {
+        console.log("produce..................")
         const producer = kafka.producer({ createPartitioner: Partitioners.LegacyPartitioner })
         await producer.connect()
         await producer.send({
