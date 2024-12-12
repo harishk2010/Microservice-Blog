@@ -13,6 +13,6 @@ app.use(express.json())
 app.use('/', router)
 
 app.listen(process.env.PORT, () => {
-    console.log(`server is running on port http://localhost:${process.env.PORT}`)
+    console.log(`server ,is running on port http://localhost:${process.env.PORT}`)
 })
 module.exports = app
