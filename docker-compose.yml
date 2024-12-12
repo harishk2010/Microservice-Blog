@@ -9,8 +9,9 @@ services:
       - kafka
       - post-db
     environment:
-      - MONGO_URL=mongodb://post-db:27017/postDB
-      - KAFKA=kafka:9092  # Changed from localhost:9092 to kafka:9092
+      MONGO_URL: mongodb://post-db:27017/postDB
+      # - KAFKA=kafka:9092  # Changed from localhost:9092 to kafka:9092
+      KAFKA: kafka:9092
     networks:
       - blog-network
 
@@ -24,8 +25,9 @@ services:
       - kafka
       - comment-db
     environment:
-      - MONGO_URL=mongodb://comment-db:27017/commentdb
-      - KAFKA=kafka:9092  # Changed from localhost:9092 to kafka:9092
+      MONGO_URL: mongodb://comment-db:27017/commentdb
+      # - KAFKA=kafka:9092  # Changed from localhost:9092 to kafka:9092
+      KAFKA: kafka:9092
     networks:
       - blog-network
 
@@ -39,9 +41,9 @@ services:
       - kafka
       - auth-db
     environment:
-      - JWT_TOKEN=mynameissecret
-      - MONGO_URL=mongodb://auth-db:27017/authdb
-      - KAFKA=kafka:9092  # Changed from localhost:9092 to kafka:9092
+      JWT_TOKEN: mynameissecret
+      MONGO_URL: mongodb://auth-db:27017/authdb
+      KAFKA: kafka:9092  # Changed from localhost:9092 to kafka:9092
     networks:
       - blog-network
 
